@@ -189,7 +189,7 @@ public class DataManager {
 					String[] values = key.toString().split("-");
 					for (int j = 0; j < values.length; j += 3) {
 						// if a date matches in month and year then it added to total
-						if (year.equals(values[j]) && month.equals(values[j + 1])) {
+						if (month.equals(values[j + 1])) {
 							// set the min value to first recorded value as it is currently 0
 							if (0 == initialMin) {
 								min = factory.milkDataFromFarms.get(i).milkData.get(key);
