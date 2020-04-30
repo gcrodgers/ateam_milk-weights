@@ -526,6 +526,40 @@ public class DataManager {
 		return total;
 	}
 
+		}
+	/**
+	 * Farm Report, calculates total amount of weight for specific farm in a
+	 * specific month and year.
+	 * 
+	 * @param farm
+	 * @param year
+	 * @return total
+	 */
+	public Integer frMonthWeight(String farm, String year, String month) {
+		int total = 0;// total amount of milk weight
+
+		// loops through farms in a given factory
+		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
+			// stores the date values of each data entry, easier to parse
+			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
+				Set<String> keys = factory.milkDataFromFarms.get(i).milkData.keySet();
+				// dates of entry are matched to specified date
+				for (String key : keys) {
+					String[] values = key.toString().split("-");
+					for (int j = 0; j < values.length; j += 3) {
+						// if a date matches in month and year then it added to total
+						if (month.equals(values[j+1]) && year.equals(values[j])) {
+							total += factory.milkDataFromFarms.get(i).milkData.get(key);
+						}
+					}
+				}
+
+			}
+		}
+		
+		return total;
+	}
+
 	/**
 	 * Farm Report, returns a percentage (truncated) of a farms weight produced in a
 	 * specific month compared to the year it is in.
@@ -538,27 +572,9 @@ public class DataManager {
 	public String frPercent(String farm, String year, String month) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
-		int monthWeight = 0;
 
-		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
-			// stores the date values of each data entry, easier to parse
-			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
-				Set<String> keys = factory.milkDataFromFarms.get(i).milkData.keySet();
-				// dates of entry are matched to specified date
-				for (String key : keys) {
-					String[] values = key.toString().split("-");
-					for (int j = 0; j < values.length; j += 3) {
-						// if a date matches in month and year then it added to total
-						if (month.contentEquals(values[j + 1]) && year.equals(values[j])) {
-							monthWeight += factory.milkDataFromFarms.get(i).milkData.get(key);
-						}
-					}
-				}
 
-			}
-		}
-
-		percentF = ((float) monthWeight) * 100 / ((float) frYearWeight(farm, year));
+		percentF = ((float) frMonthWeight(farm,year, month)) * 100 / ((float) frYearWeight(farm, year));
 		percentS = Float.toString(percentF);
 //		percentS = percentS.substring(0, percentS.length() - 4);
 		percentS += "%";
