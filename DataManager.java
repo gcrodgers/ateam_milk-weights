@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class DataManager {
@@ -152,7 +155,7 @@ public class DataManager {
 		}
 		keys = monthKeys.keySet();
 		for (String key : keys) {
-			System.out.println(key + " monthkey");
+		
 			String[] values = key.toString().split("-");
 			for (int j = 0; j < values.length; j += 3) {
 				// if year is not in list
@@ -167,7 +170,7 @@ public class DataManager {
 			}
 		}
 		keys = yearSum.keySet();
-		System.out.println(keys + "years");
+
 		// dates of entry are matched to specified date
 		for (String key : keys) {
 			if (max < yearSum.get(key)) {
@@ -319,7 +322,7 @@ public class DataManager {
 		}
 		keys = monthKeys.keySet();
 		for (String key : keys) {
-			System.out.println(key + " monthkey");
+		
 			String[] values = key.toString().split("-");
 			for (int j = 0; j < values.length; j += 3) {
 				// if year is not in list
@@ -334,7 +337,7 @@ public class DataManager {
 			}
 		}
 		keys = yearSum.keySet();
-		System.out.println(keys + "years");
+	
 		// dates of entry are matched to specified date
 		for (String key : keys) {
 			if (max < yearSum.get(key)) {
@@ -527,6 +530,7 @@ public class DataManager {
 		}
 		return total;
 	}
+
 	/**
 	 * Farm Report, calculates total amount of weight for specific farm in a
 	 * specific month and year.
@@ -548,7 +552,7 @@ public class DataManager {
 					String[] values = key.toString().split("-");
 					for (int j = 0; j < values.length; j += 3) {
 						// if a date matches in month and year then it added to total
-						if (month.equals(values[j+1]) && year.equals(values[j])) {
+						if (month.equals(values[j + 1]) && year.equals(values[j])) {
 							total += factory.milkDataFromFarms.get(i).milkData.get(key);
 						}
 					}
@@ -556,7 +560,7 @@ public class DataManager {
 
 			}
 		}
-		
+
 		return total;
 	}
 
@@ -573,34 +577,33 @@ public class DataManager {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
 
-
-		percentF = ((float) frMonthWeight(farm,year, month)) * 100 / ((float) frYearWeight(farm, year));
+		percentF = ((float) frMonthWeight(farm, year, month)) * 100 / ((float) frYearWeight(farm, year));
 		percentS = Float.toString(percentF);
 //		percentS = percentS.substring(0, percentS.length() - 4);
 		percentS += "%";
 
 		return percentS;
 	}
-	
+
 	/**
 	 * Farm Report,returns a list of farm's keys in a sorted order by date.
 	 * 
 	 * @param farm
 	 * @return
 	 */
-	public List<String> frList(String farm){
-		
+	public List<String> frList(String farm) {
+
 		List<String> keys = new ArrayList<String>();
-		
+
 		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
 			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
-				keys= new ArrayList<String>(factory.milkDataFromFarms.get(i).milkData.keySet());		    
+				keys = new ArrayList<String>(factory.milkDataFromFarms.get(i).milkData.keySet());
 			}
 		}
 		Collections.sort(keys);
 		return keys;
 	}
-	
+
 	/**
 	 * Annual Report, returns the total weight of all farms in a year.
 	 * 
@@ -627,7 +630,6 @@ public class DataManager {
 		}
 		return total;
 	}
-	
 
 	/**
 	 * Annual Report, returns the total weight of specified farm in year.
@@ -679,7 +681,7 @@ public class DataManager {
 
 		return percentS;
 	}
-	
+
 	/**
 	 * Annual Report,returns a list of farm IDs for a specified year
 	 * 
@@ -687,9 +689,9 @@ public class DataManager {
 	 * @param year
 	 * @return
 	 */
-	private List<String> arList(String year){	
-		List<String> farmID = new ArrayList<String>();//farm ids list	
-		
+	private List<String> arList(String year) {
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
 		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
 			Set<String> keys = factory.milkDataFromFarms.get(i).milkData.keySet();
 			// dates of entry are matched to specified date
@@ -698,15 +700,16 @@ public class DataManager {
 				for (int j = 0; j < values.length; j += 3) {
 					// if a date matches in month and year then it added to total
 					if (year.equals(values[j])) {
-						if (!farmID.contains(factory.milkDataFromFarms.get(i).farmID)){
-							farmID.add(factory.milkDataFromFarms.get(i).farmID);		
+						if (!farmID.contains(factory.milkDataFromFarms.get(i).farmID)) {
+							farmID.add(factory.milkDataFromFarms.get(i).farmID);
 						}
 					}
 				}
-			}	
+			}
 		}
 		return farmID;
 	}
+
 	/**
 	 * Annual Report,returns a sorted list of farm IDs in ascending id order.
 	 * 
@@ -714,18 +717,18 @@ public class DataManager {
 	 * @param year
 	 * @return
 	 */
-	public List<String> arListAscending(String year){
-		
-		List<String> farmID = new ArrayList<String>();//farm ids list
-			
+	public List<String> arListAscending(String year) {
+
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
 		farmID = arList(year);
-		
-		//sort in correct order of farm
+
+		// sort in correct order of farm
 		Collections.sort(farmID);
 
 		return farmID;
 	}
-	
+
 	/**
 	 * Annual Report,returns a sorted list of farm IDs in descending id order.
 	 * 
@@ -733,17 +736,59 @@ public class DataManager {
 	 * @param year
 	 * @return
 	 */
-	public List<String> arListDescending(String year){
-		
-		
-		List<String> farmID = new ArrayList<String>();//farm ids list
-			
+	public List<String> arListDescending(String year) {
+
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
 		farmID = arList(year);
 
-		//sort in correct order of farm
+		// sort in correct order of farm
 		Collections.sort(farmID, Collections.reverseOrder());
 
 		return farmID;
+	}
+	
+	/**
+	 * Annual Report,returns a sorted list of farm IDs in ascending id order by weight.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> arAscendingWeight(String year) {
+		List<String> farmList = arList(year);// farm ids list
+		List<String> sortedList = new ArrayList<String>();//list that will hold sorted farms id list
+		Hashtable<String, Integer> farmTable = new Hashtable<String, Integer>();// table of farms with monthly weight
+		// add each farms monthly weight to table
+		for (int i = 0; i < farmList.size(); i++) {
+			farmTable.put(farmList.get(i), arFarmWeight(farmList.get(i), year));
+		}
+		List<Entry<?, Integer>> sort = sortValue(farmTable);
+
+		for (Entry<?, Integer> key : sort) {
+			String[] values = key.toString().split("=");
+			for (int j = 0; j < values.length; j += 2) {
+				sortedList.add(values[j]);
+			}
+		}
+		Collections.reverse(sortedList);
+		return sortedList;
+	}
+	
+	/**
+	 * Annual Report,returns a sorted list of farm IDs in descending id order by weight.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> arDescendingWeight(String year) {
+		List<String> sortedList = arAscendingWeight(year);//list that will hold sorted farms id list
+		//reverse list 
+		Collections.reverse(sortedList);
+		return sortedList;
 	}
 
 	/**
@@ -824,28 +869,123 @@ public class DataManager {
 		percentS = Float.toString(percentF);
 //		percentS = percentS.substring(0, percentS.length() - 4);
 		percentS += "%";
-		System.out.println(percentS);
+
 		return percentS;
 	}
-	
+
 	/**
 	 * Farm Report,returns a list of farm's keys in a sorted order by date.
 	 * 
 	 * @param farm
 	 * @return
 	 */
-	public List<String> mrList(String farm){
-		
-		List<String> keys = new ArrayList<String>();
-		
+	private List<String> mrList(String year, String month) {
+
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
 		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
-			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
-				keys= new ArrayList<String>(factory.milkDataFromFarms.get(i).milkData.keySet());		    
+			Set<String> keys = factory.milkDataFromFarms.get(i).milkData.keySet();
+			// dates of entry are matched to specified date
+			for (String key : keys) {
+				String[] values = key.toString().split("-");
+				for (int j = 0; j < values.length; j += 3) {
+					// if a date matches in month and year then it added to total
+					if (month.equals(values[j + 1]) && year.equals(values[j])) {
+						if (!farmID.contains(factory.milkDataFromFarms.get(i).farmID)) {
+							farmID.add(factory.milkDataFromFarms.get(i).farmID);
+						}
+					}
+				}
 			}
 		}
-		Collections.sort(keys);
-		return keys;
+		return farmID;
 	}
+
+	/**
+	 * Monthly Report,returns a sorted list of farm IDs in ascending id order.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> mrListAscendingID(String year, String month) {
+
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
+		farmID = mrList(year, month);
+
+		// sort in correct order of farm
+		Collections.sort(farmID);
+
+		return farmID;
+	}
+
+	/**
+	 * Monthly Report,returns a sorted list of farm IDs in descending id order.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> mrListDescendingID(String year, String month) {
+
+		List<String> farmID = new ArrayList<String>();// farm ids list
+
+		farmID = mrList(year, month);
+
+		// sort in correct order of farm
+		Collections.sort(farmID, Collections.reverseOrder());
+
+		return farmID;
+	}
+
+	/**
+	 * Monthly Report,returns a sorted list of farm IDs in ascending id order by weight.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> mrAscendingWeight(String year, String month) {
+		List<String> farmList = mrList(year, month);// farm ids list
+		List<String> sortedList = new ArrayList<String>();//list that will hold sorted farms id list
+		Hashtable<String, Integer> farmTable = new Hashtable<String, Integer>();// table of farms with monthly weight
+		// add each farms monthly weight to table
+		for (int i = 0; i < farmList.size(); i++) {
+			farmTable.put(farmList.get(i), mrFarmWeight(farmList.get(i), month, year));
+		}
+
+		List<Entry<?, Integer>> sort = sortValue(farmTable);
+
+		for (Entry<?, Integer> key : sort) {
+
+			String[] values = key.toString().split("=");
+			for (int j = 0; j < values.length; j += 2) {
+				sortedList.add(values[j]);
+			}
+		}
+	
+		return sortedList;
+	}
+	/**
+	 * Monthly Report,returns a sorted list of farm IDs in descending id order by weight.
+	 * 
+	 * 
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<String> mrDescendingWeight(String year, String month) {
+		List<String> sortedList = mrAscendingWeight(year, month);//list that will hold sorted farms id list
+		//reverse list 
+		Collections.reverse(sortedList);
+		return sortedList;
+	}
+
+
 
 	/**
 	 * Date Range Report, weight for all farms within a given range.
@@ -928,8 +1068,8 @@ public class DataManager {
 	}
 
 	/**
-	 * Date Range Report, returns a percentage of a farm's weight
-	 * produced in a specific range compared to all farms that year.
+	 * Date Range Report, returns a percentage of a farm's weight produced in a
+	 * specific range compared to all farms that year.
 	 * 
 	 * @param farm
 	 * @param year
@@ -952,6 +1092,25 @@ public class DataManager {
 		percentS += "%";
 
 		return percentS;
+	}
+	
+	/**
+	 * Helper method, sorts HashTable by value. Method is slightly modified to fit
+	 * needs of this project
+	 * 
+	 * @source https://stackoverflow.com/questions/5176771/sort-hashtable-by-values
+	 * @author Shengyuan Lu
+	 */
+	private ArrayList<Map.Entry<?, Integer>> sortValue(Hashtable<?, Integer> t) {
+		// Transfer as List and sort it
+		ArrayList<Map.Entry<?, Integer>> l = new ArrayList(t.entrySet());
+		Collections.sort(l, new Comparator<Map.Entry<?, Integer>>() {
+
+			public int compare(Map.Entry<?, Integer> o1, Map.Entry<?, Integer> o2) {
+				return o1.getValue().compareTo(o2.getValue());
+			}
+		});
+		return l;
 	}
 
 }
