@@ -600,6 +600,7 @@ public class DataManager {
 		Collections.sort(keys);
 		return keys;
 	}
+	
 	/**
 	 * Annual Report, returns the total weight of all farms in a year.
 	 * 
@@ -677,6 +678,72 @@ public class DataManager {
 		percentS += "%";
 
 		return percentS;
+	}
+	
+	/**
+	 * Annual Report,returns a list of farm IDs for a specified year
+	 * 
+	 * 
+	 * @param year
+	 * @return
+	 */
+	private List<String> arList(String year){	
+		List<String> farmID = new ArrayList<String>();//farm ids list	
+		
+		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
+			Set<String> keys = factory.milkDataFromFarms.get(i).milkData.keySet();
+			// dates of entry are matched to specified date
+			for (String key : keys) {
+				String[] values = key.toString().split("-");
+				for (int j = 0; j < values.length; j += 3) {
+					// if a date matches in month and year then it added to total
+					if (year.equals(values[j])) {
+						if (!farmID.contains(factory.milkDataFromFarms.get(i).farmID)){
+							farmID.add(factory.milkDataFromFarms.get(i).farmID);		
+						}
+					}
+				}
+			}	
+		}
+		return farmID;
+	}
+	/**
+	 * Annual Report,returns a sorted list of farm IDs in ascending id order.
+	 * 
+	 * 
+	 * @param year
+	 * @return
+	 */
+	public List<String> arListAscending(String year){
+		
+		List<String> farmID = new ArrayList<String>();//farm ids list
+			
+		farmID = arList(year);
+		
+		//sort in correct order of farm
+		Collections.sort(farmID);
+
+		return farmID;
+	}
+	
+	/**
+	 * Annual Report,returns a sorted list of farm IDs in descending id order.
+	 * 
+	 * 
+	 * @param year
+	 * @return
+	 */
+	public List<String> arListDescending(String year){
+		
+		
+		List<String> farmID = new ArrayList<String>();//farm ids list
+			
+		farmID = arList(year);
+
+		//sort in correct order of farm
+		Collections.sort(farmID, Collections.reverseOrder());
+
+		return farmID;
 	}
 
 	/**
@@ -759,6 +826,25 @@ public class DataManager {
 		percentS += "%";
 		System.out.println(percentS);
 		return percentS;
+	}
+	
+	/**
+	 * Farm Report,returns a list of farm's keys in a sorted order by date.
+	 * 
+	 * @param farm
+	 * @return
+	 */
+	public List<String> mrList(String farm){
+		
+		List<String> keys = new ArrayList<String>();
+		
+		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
+			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
+				keys= new ArrayList<String>(factory.milkDataFromFarms.get(i).milkData.keySet());		    
+			}
+		}
+		Collections.sort(keys);
+		return keys;
 	}
 
 	/**
