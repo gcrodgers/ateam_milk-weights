@@ -3,8 +3,10 @@ package application;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 public class DataManager {
@@ -525,8 +527,6 @@ public class DataManager {
 		}
 		return total;
 	}
-
-		}
 	/**
 	 * Farm Report, calculates total amount of weight for specific farm in a
 	 * specific month and year.
@@ -581,7 +581,25 @@ public class DataManager {
 
 		return percentS;
 	}
-
+	
+	/**
+	 * Farm Report,returns a list of farm's keys in a sorted order by date.
+	 * 
+	 * @param farm
+	 * @return
+	 */
+	public List<String> frList(String farm){
+		
+		List<String> keys = new ArrayList<String>();
+		
+		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
+			if (farm.equals(factory.milkDataFromFarms.get(i).farmID)) {
+				keys= new ArrayList<String>(factory.milkDataFromFarms.get(i).milkData.keySet());		    
+			}
+		}
+		Collections.sort(keys);
+		return keys;
+	}
 	/**
 	 * Annual Report, returns the total weight of all farms in a year.
 	 * 
@@ -608,6 +626,7 @@ public class DataManager {
 		}
 		return total;
 	}
+	
 
 	/**
 	 * Annual Report, returns the total weight of specified farm in year.
