@@ -535,7 +535,7 @@ public class DataManager {
 	 * @param month
 	 * @return percentS
 	 */
-	public String frPrecent(String farm, String year, String month) {
+	public String frPercent(String farm, String year, String month) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
 		int monthWeight = 0;
@@ -631,7 +631,7 @@ public class DataManager {
 	 * @param year
 	 * @return
 	 */
-	public String arPrecent(String farm, String year) {
+	public String arPercent(String farm, String year) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
 
@@ -713,7 +713,7 @@ public class DataManager {
 	 * @param year
 	 * @return
 	 */
-	public String mrPrecent(String farm, String month, String year) {
+	public String mrPercent(String farm, String month, String year) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
 
@@ -818,7 +818,7 @@ public class DataManager {
 	 * @param dayEnd
 	 * @return
 	 */
-	public String drPrecent(String farm, String year, String monthStart, String dayStart, String monthEnd,
+	public String drPercent(String farm, String year, String monthStart, String dayStart, String monthEnd,
 			String dayEnd) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
