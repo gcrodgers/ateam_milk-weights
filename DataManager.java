@@ -818,7 +818,7 @@ public class DataManager {
 	 * @param dayEnd
 	 * @return
 	 */
-	public String adrPrecent(String farm, String year, String monthStart, String dayStart, String monthEnd,
+	public String drPrecent(String farm, String year, String monthStart, String dayStart, String monthEnd,
 			String dayEnd) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
