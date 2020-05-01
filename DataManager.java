@@ -1,3 +1,25 @@
+//////////////////// ALL ASSIGNMENTS INCLUDE THIS SECTION /////////////////////
+
+//
+
+// Title:           ateam project - Milk Weights
+
+// Files:           GUI, FileManager, Farm, CheeseFactory, DataManager
+
+// Course:          CS400 Spring 2020
+
+//
+
+// Author:          Garrett Rodgers and William Braun
+
+// Email:           gcrodgers@wisc.edu
+//                  wmbraun@wisc.edu
+
+// Lecturer's Name: Deb Deppler
+
+//
+
+/////////////////////////////// 80 COLUMNS WIDE ///////////////////////////////
 package application;
 
 import java.time.LocalDate;
@@ -28,8 +50,8 @@ public class DataManager {
 	/**
 	 * Calculates the average weight of milk produced by farms in a given month.
 	 * 
-	 * @param month
-	 * @return average
+	 * @param month	- String of month to be specified
+	 * @return average - Integer of average Weight in a specified month
 	 */
 	public Integer getMonthlyAverage(String month) {
 
@@ -66,8 +88,8 @@ public class DataManager {
 	/**
 	 * Calculates the minimum weight of milk produced by farms in a given month.
 	 * 
-	 * @param month
-	 * @return min
+	 * @param month - month specified
+	 * @return min - minimum weight in month, for all same months for all farms
 	 */
 	public Integer getMonthlyMin(String month) {
 		int min = 0;// monthly minimum value
@@ -92,6 +114,7 @@ public class DataManager {
 			}
 		}
 		keys = monthKeys.keySet();
+		System.out.println(keys);
 		for (String key : keys) {
 			String[] values = key.toString().split("-");
 			for (int j = 0; j < values.length; j += 3) {
@@ -118,17 +141,40 @@ public class DataManager {
 			// compare current value to min value
 			if (min > yearSum.get(key)) {
 				min = yearSum.get(key);
+				
 			}
+			System.out.println(min);
+			System.out.println(yearSum.get(key));
 		}
+//		System.out.println(min);
 		return min;
 	}
-
+	
+	public Hashtable<String, Integer> helper(String month){
+		Hashtable<String, Integer> monthKeys = new Hashtable<String, Integer>();// keys that have the correct month
+		Set<String> keys = new HashSet<String>();// holds keys for each set used in search
+		// loops through farms in a given factory
+				for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
+					// stores the date values of each data entry, easier to parse
+					keys = factory.milkDataFromFarms.get(i).milkData.keySet();
+					// dates of entry are matched to specified date
+					for (String key : keys) {
+						String[] values = key.toString().split("-");
+						for (int j = 0; j < values.length; j += 3) {
+							// if a date matches in month
+							if (month.equals(values[j + 1])) {
+								monthKeys.put(key, factory.milkDataFromFarms.get(i).milkData.get(key));
+							}
+						}
+					}
+				}
+		return monthKeys;
+	}
 	/**
-	 * Calculates the maximum weight of milk produced by farms in a given month and
-	 * year.
+	 * Calculates the maximum weight of milk produced by farms in a given month.
 	 * 
-	 * @param month
-	 * @return
+	 * @param month - month specified
+	 * @return max - maximum weight in month, for all same months for all farms
 	 */
 	public Integer getMonthlyMax(String month) {
 
@@ -138,21 +184,7 @@ public class DataManager {
 		Hashtable<String, Integer> yearSum = new Hashtable<String, Integer>();// sums the total yield for the month in a
 																				// given year
 
-		// loops through farms in a given factory
-		for (int i = 0; i < factory.milkDataFromFarms.size(); i++) {
-			// stores the date values of each data entry, easier to parse
-			keys = factory.milkDataFromFarms.get(i).milkData.keySet();
-			// dates of entry are matched to specified date
-			for (String key : keys) {
-				String[] values = key.toString().split("-");
-				for (int j = 0; j < values.length; j += 3) {
-					// if a date matches in month
-					if (month.equals(values[j + 1])) {
-						monthKeys.put(key, factory.milkDataFromFarms.get(i).milkData.get(key));
-					}
-				}
-			}
-		}
+		monthKeys = helper(month);
 		keys = monthKeys.keySet();
 		for (String key : keys) {
 		
@@ -185,9 +217,9 @@ public class DataManager {
 	 * Calculates the average weight of milk produced by a specified farm in a given
 	 * month.
 	 * 
-	 * @param farm
-	 * @param month
-	 * @return
+	 * @param farm - farmID specified
+	 * @param month - month specified
+	 * @return average - average weight of farm in a month compared to all other recoded same months
 	 */
 	public Integer getMonthlyAverageForFarm(String farm, String month) {
 
@@ -227,9 +259,11 @@ public class DataManager {
 	 * Calculates the minimum weight of milk produced by a specified farm in a given
 	 * month.
 	 * 
-	 * @param farm
-	 * @param month
-	 * @return
+	 * Unfinished.
+	 * 
+	 * @param farm - farmID specified
+	 * @param month - month specified
+	 * @return min - minimum weight of farm in month
 	 */
 	public Integer getMonthlyMinForFarm(String farm, String month) {
 		int min = 0;// monthly minimum value
@@ -291,9 +325,11 @@ public class DataManager {
 	 * Calculates the maximum weight of milk produced by a specified farm in a given
 	 * month.
 	 * 
-	 * @param farm
-	 * @param month
-	 * @return
+	 * Unfinished.
+	 * 
+	 * @param farm - farmID specified
+	 * @param month - month specified
+	 * @return max - max weight of farm in month
 	 */
 	public Integer getMonthlyMaxForFarm(String farm, String month) {
 
@@ -356,13 +392,13 @@ public class DataManager {
 	/**
 	 * Average weight within a specified date range, average weight by day
 	 * 
-	 * @param day1   -start
-	 * @param month1
-	 * @param year1
-	 * @param day2   -end
-	 * @param month2
-	 * @param year2
-	 * @return
+	 * @param day1 -day start
+	 * @param month1 - month start
+	 * @param year1 - year start
+	 * @param day2 - day end
+	 * @param month2 - month end
+	 * @param year2 - year end
+	 * @return average - average weight in range per day
 	 */
 	public Integer getAverageInDateRange(String day1, String month1, String year1, String day2, String month2,
 			String year2) {
@@ -409,13 +445,13 @@ public class DataManager {
 	 * Calculates the maximum weight of milk produced on a given day in range of 2
 	 * dates
 	 * 
-	 * @param day1
-	 * @param month1
-	 * @param year1
-	 * @param day2
-	 * @param month2
-	 * @param year2
-	 * @return
+	 * @param day1 -day start
+	 * @param month1 - month start
+	 * @param year1 - year start
+	 * @param day2 - day end
+	 * @param month2 - month end
+	 * @param year2 - year end
+	 * @return min - min weight in range
 	 */
 	public Integer getMinInDateRange(String day1, String month1, String year1, String day2, String month2,
 			String year2) {
@@ -459,13 +495,15 @@ public class DataManager {
 	 * Calculates the minimum weight of milk produced on a given day in range of 2
 	 * dates
 	 * 
-	 * @param day1
-	 * @param month1
-	 * @param year1
-	 * @param day2
-	 * @param month2
-	 * @param year2
-	 * @return
+	 * Unfinished.
+	 * 
+	 * @param day1 -day start
+	 * @param month1 - month start
+	 * @param year1 - year start
+	 * @param day2 - day end
+	 * @param month2 - month end
+	 * @param year2 - year end
+	 * @return max - max weight in range
 	 */
 	public Integer getMaxInDateRange(String day1, String month1, String year1, String day2, String month2,
 			String year2) {
@@ -503,9 +541,9 @@ public class DataManager {
 	 * Farm Report, calculates total amount of weight for specific farm in a
 	 * specific year
 	 * 
-	 * @param farm
-	 * @param year
-	 * @return total
+	 * @param farm - farmID specified
+	 * @param year - year specified
+	 * @return total - weight of farm in year 
 	 */
 	public Integer frYearWeight(String farm, String year) {
 		int total = 0;// total amount of milk weight
@@ -535,9 +573,10 @@ public class DataManager {
 	 * Farm Report, calculates total amount of weight for specific farm in a
 	 * specific month and year.
 	 * 
-	 * @param farm
-	 * @param year
-	 * @return total
+	 * @param farm - farmID specified
+	 * @param year - year specified
+	 * @param month - month specified
+	 * @return total - weight of farm in year and month
 	 */
 	public Integer frMonthWeight(String farm, String year, String month) {
 		int total = 0;// total amount of milk weight
@@ -568,10 +607,10 @@ public class DataManager {
 	 * Farm Report, returns a percentage (truncated) of a farms weight produced in a
 	 * specific month compared to the year it is in.
 	 * 
-	 * @param farm
-	 * @param year
-	 * @param month
-	 * @return percentS
+	 * @param farm - farmID specified
+	 * @param year - year specified
+	 * @param month - month specified
+	 * @return percentS - String of what percent the farm specified makes up of yield in year and month
 	 */
 	public String frPercent(String farm, String year, String month) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
@@ -588,8 +627,8 @@ public class DataManager {
 	/**
 	 * Farm Report,returns a list of farm's keys in a sorted order by date.
 	 * 
-	 * @param farm
-	 * @return
+	 * @param farm - farmID specified
+	 * @return keys - list of farm keys sorted by ascending date
 	 */
 	public List<String> frList(String farm) {
 
@@ -607,8 +646,8 @@ public class DataManager {
 	/**
 	 * Annual Report, returns the total weight of all farms in a year.
 	 * 
-	 * @param year
-	 * @return
+	 * @param year - year specified for search
+	 * @return total - weight of all farms in year
 	 */
 	public Integer arYearWeight(String year) {
 		int total = 0;// total amount of milk weight
@@ -634,9 +673,9 @@ public class DataManager {
 	/**
 	 * Annual Report, returns the total weight of specified farm in year.
 	 * 
-	 * @param farm
-	 * @param year
-	 * @return
+	 * @param farm - farmID specified
+	 * @param year - year specified for search
+	 * @return total - weight of farm in year
 	 */
 	public Integer arFarmWeight(String farm, String year) {
 		int total = 0;// total amount of milk weight
@@ -665,9 +704,9 @@ public class DataManager {
 	 * Annual Report, returns a percentage (truncated) of a farms weight produced in
 	 * a specific year compared to all farms that year.
 	 * 
-	 * @param farm
-	 * @param year
-	 * @return
+	 * @param farm - farmID specified
+	 * @param year - year specified for search
+	 * @return percentS - String of what percent the farm specified makes up of yield in year
 	 */
 	public String arPercent(String farm, String year) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
@@ -686,8 +725,8 @@ public class DataManager {
 	 * Annual Report,returns a list of farm IDs for a specified year
 	 * 
 	 * 
-	 * @param year
-	 * @return
+	 * @param year - year specified for search
+	 * @return farmID - list of farms in year
 	 */
 	private List<String> arList(String year) {
 		List<String> farmID = new ArrayList<String>();// farm ids list
@@ -714,8 +753,8 @@ public class DataManager {
 	 * Annual Report,returns a sorted list of farm IDs in ascending id order.
 	 * 
 	 * 
-	 * @param year
-	 * @return
+	 * @param year - year specified for search
+	 * @return farmID - list of farms in descending order by id
 	 */
 	public List<String> arListAscending(String year) {
 
@@ -733,8 +772,8 @@ public class DataManager {
 	 * Annual Report,returns a sorted list of farm IDs in descending id order.
 	 * 
 	 * 
-	 * @param year
-	 * @return
+	 * @param year - year specified for search
+	 * @return farmID - list of farms in descending order by id
 	 */
 	public List<String> arListDescending(String year) {
 
@@ -752,9 +791,8 @@ public class DataManager {
 	 * Annual Report,returns a sorted list of farm IDs in ascending id order by weight.
 	 * 
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @return sortedList - list of farms in ascending order by weight
 	 */
 	public List<String> arAscendingWeight(String year) {
 		List<String> farmList = arList(year);// farm ids list
@@ -779,10 +817,8 @@ public class DataManager {
 	/**
 	 * Annual Report,returns a sorted list of farm IDs in descending id order by weight.
 	 * 
-	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @return sortedList - list of farms in descending order by weight
 	 */
 	public List<String> arDescendingWeight(String year) {
 		List<String> sortedList = arAscendingWeight(year);//list that will hold sorted farms id list
@@ -794,9 +830,9 @@ public class DataManager {
 	/**
 	 * Monthly Report, returns the total weight of all farms in a month and year.
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param month - specified month for search
+	 * @param year	- specified year for search
+	 * @return total - weight all farms in year and month
 	 */
 	public Integer mrAllWeight(String month, String year) {
 		int total = 0;// total amount of milk weight
@@ -823,10 +859,10 @@ public class DataManager {
 	 * Monthly Report, returns the total weight of specified farm in a month and
 	 * year.
 	 * 
-	 * @param farm
-	 * @param month
-	 * @param year
-	 * @return
+	 * @param farm - specified farmID 
+	 * @param month - specified month for search
+	 * @param year	- specified year for search
+	 * @return total - weight the farm specified makes up of yield in year and month
 	 */
 	public Integer mrFarmWeight(String farm, String month, String year) {
 		int total = 0;// total amount of milk weight
@@ -855,29 +891,29 @@ public class DataManager {
 	 * Monthly Report, returns a percentage (truncated) of a farms weight produced
 	 * in a specific year compared to all farms that year.
 	 * 
-	 * @param farm
-	 * @param month
-	 * @param year
-	 * @return
+	 * @param farm - specified farmID 
+	 * @param month - specified month for search
+	 * @param year	- specified year for search
+	 * @return percentS - Sting of what percent the farm specified makes up of yield in year and month
 	 */
 	public String mrPercent(String farm, String month, String year) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
 
 		percentF = ((float) mrFarmWeight(farm, month, year)) * 100 / ((float) mrAllWeight(month, year));
-
+		//convert float to final string form
 		percentS = Float.toString(percentF);
-//		percentS = percentS.substring(0, percentS.length() - 4);
 		percentS += "%";
 
 		return percentS;
 	}
 
 	/**
-	 * Farm Report,returns a list of farm's keys in a sorted order by date.
+	 * Monthly Report,returns a list of farm's keys in a sorted order by date.
 	 * 
-	 * @param farm
-	 * @return
+	 * @param year - year specified for search
+	 * @param month - month specified for search
+	 * @return list of farmIDs in specified month and year by farmID 
 	 */
 	private List<String> mrList(String year, String month) {
 
@@ -905,9 +941,9 @@ public class DataManager {
 	 * Monthly Report,returns a sorted list of farm IDs in ascending id order.
 	 * 
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @param month - month specified for search
+	 * @return list of farmIDs in specified month and year by farmID ascending order
 	 */
 	public List<String> mrListAscendingID(String year, String month) {
 
@@ -925,9 +961,9 @@ public class DataManager {
 	 * Monthly Report,returns a sorted list of farm IDs in descending id order.
 	 * 
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @param month - month specified for search
+	 * @return list of farmIDs in specified month and year by farmID descending order
 	 */
 	public List<String> mrListDescendingID(String year, String month) {
 
@@ -945,9 +981,9 @@ public class DataManager {
 	 * Monthly Report,returns a sorted list of farm IDs in ascending id order by weight.
 	 * 
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @param month - month specified for search
+	 * @return sortedList - list of farms in ascending order by weight
 	 */
 	public List<String> mrAscendingWeight(String year, String month) {
 		List<String> farmList = mrList(year, month);// farm ids list
@@ -959,9 +995,8 @@ public class DataManager {
 		}
 
 		List<Entry<?, Integer>> sort = sortValue(farmTable);
-
+		//add each farm to list in correct order
 		for (Entry<?, Integer> key : sort) {
-
 			String[] values = key.toString().split("=");
 			for (int j = 0; j < values.length; j += 2) {
 				sortedList.add(values[j]);
@@ -974,9 +1009,9 @@ public class DataManager {
 	 * Monthly Report,returns a sorted list of farm IDs in descending id order by weight.
 	 * 
 	 * 
-	 * @param year
-	 * @param month
-	 * @return
+	 * @param year - year specified for search
+	 * @param month - month specified for search
+	 * @return sortedList - list of farms in descending order by weight
 	 */
 	public List<String> mrDescendingWeight(String year, String month) {
 		List<String> sortedList = mrAscendingWeight(year, month);//list that will hold sorted farms id list
@@ -990,12 +1025,12 @@ public class DataManager {
 	/**
 	 * Date Range Report, weight for all farms within a given range.
 	 * 
-	 * @param year
-	 * @param monthStart
-	 * @param dayStart
-	 * @param monthEnd
-	 * @param dayEnd
-	 * @return
+	 * @param year - year to be searched
+	 * @param monthStart - month starting point
+	 * @param dayStart - day starting point
+	 * @param monthEnd - month ending point
+	 * @param dayEnd - day ending point
+	 * @return total - total weight of milk in date range 
 	 */
 	public Integer drAllWeight(String year, String monthStart, String dayStart, String monthEnd, String dayEnd) {
 
@@ -1020,9 +1055,7 @@ public class DataManager {
 						total += factory.milkDataFromFarms.get(i).milkData.get(key);
 					}
 				}
-
 			}
-
 		}
 		return total;
 	}
@@ -1030,12 +1063,12 @@ public class DataManager {
 	/**
 	 * Date Range Report, weight for a specific farm within a given range.
 	 * 
-	 * @param year
-	 * @param monthStart
-	 * @param dayStart
-	 * @param monthEnd
-	 * @param dayEnd
-	 * @return
+	 * @param year - year to be searched
+	 * @param monthStart - month starting point
+	 * @param dayStart - day starting point
+	 * @param monthEnd - month ending point
+	 * @param dayEnd - day ending point
+	 * @return total - total weight of milk in date range for specified farm
 	 */
 	public Integer drFarmWeight(String farm, String year, String monthStart, String dayStart, String monthEnd,
 			String dayEnd) {
@@ -1071,24 +1104,23 @@ public class DataManager {
 	 * Date Range Report, returns a percentage of a farm's weight produced in a
 	 * specific range compared to all farms that year.
 	 * 
-	 * @param farm
-	 * @param year
-	 * @param monthStart
-	 * @param dayStart
-	 * @param monthEnd
-	 * @param dayEnd
-	 * @return
+	 * @param farm - farmID specified
+	 * @param year - year to be searched
+	 * @param monthStart - month starting point
+	 * @param dayStart - day starting point
+	 * @param monthEnd - month ending point
+	 * @param dayEnd - day ending point
+	 * @return percentS - String of what percent the farm specified makes up of yield in a date range
 	 */
 	public String drPercent(String farm, String year, String monthStart, String dayStart, String monthEnd,
 			String dayEnd) {
 		float percentF = 0;// percentage of a farms production relative to production in that year, float
 		String percentS = null;// percentage of a farms production relative to production in that year, string
-
+		//calculate percent as float
 		percentF = ((float) drFarmWeight(farm, year, monthStart, dayStart, monthEnd, dayEnd)) * 100
 				/ ((float) drAllWeight(year, monthStart, dayStart, monthEnd, dayEnd));
-
+		//convert float to final string form
 		percentS = Float.toString(percentF);
-//		percentS = percentS.substring(0, percentS.length() - 4);
 		percentS += "%";
 
 		return percentS;
